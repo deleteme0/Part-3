@@ -3,6 +3,10 @@ const app = express()
 
 app.use(express.json())
 
+var morgan = require('morgan')
+
+app.use(morgan('tiny'))
+
 let persons = [
     { 
       "id": 1,
@@ -74,11 +78,6 @@ app.post('/api/persons',(request,response) => {
   person.id = Math.floor(Math.random()*1000)
 
   persons = persons.concat(person)
-
-  
-  
-  console.log(person)
-  console.log(persons)
 
   response.status(204).end()
 })
