@@ -2,12 +2,15 @@ const express = require('express')
 const app = express()
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 app.use(express.json())
 
 var morgan = require('morgan')
 
 app.use(morgan('tiny'))
 
+=======
+>>>>>>> parent of 4531165 (Merge branch 'main' of https://github.com/deleteme0/Part-3)
 =======
 >>>>>>> parent of 4531165 (Merge branch 'main' of https://github.com/deleteme0/Part-3)
 let persons = [
