@@ -5,11 +5,7 @@ app.use(express.json())
 
 var morgan = require('morgan')
 
-morgan.token('logy', (req,res) => {
-  return JSON.stringify(req.body)
-})
-
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :logy'))
+app.use(morgan('tiny'))
 
 let persons = [
     { 
