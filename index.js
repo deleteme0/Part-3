@@ -30,6 +30,14 @@ app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
 
+app.get('/api/persons/:i',(request,response) => {
+  const i = request.params.i;
+
+  const i_person = persons.find((each) => each.id == i)
+
+  response.json(i_person)
+})
+
 app.get('/info',(request,response)=>{
   let d = Date(Date.now()).toString()
   console.log(d)
