@@ -47,6 +47,20 @@ app.delete('/api/persons/:i',(request,response) =>{
   response.status(204).end()
 })
 
+app.post('/api/persons',(request,response) => {
+  const person = request.body
+
+
+  person.id = Math.floor(Math.random()*1000)
+
+  persons = persons.concat(person)
+  
+  console.log(person)
+  console.log(persons)
+
+  response.status(204).end()
+})
+
 app.get('/info',(request,response)=>{
   let d = Date(Date.now()).toString()
   console.log(d)
