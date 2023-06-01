@@ -50,10 +50,32 @@ app.delete('/api/persons/:i',(request,response) =>{
 app.post('/api/persons',(request,response) => {
   const person = request.body
 
+  try{
+  const temp = persons.filter((each) => each.name == person.name)
+  if (temp.length > 0){
+    response.status(400)
+    response.send("Name Already exists")
+    return
+  }
+
+  const temp2 = persons.filter((each)=> each.number == person.number)
+  if (temp2.length > 0){
+    response.status(400)
+    response.send("Number already exists")
+    return
+  }
+  }
+  catch{
+    response.status(400)
+    response.send("Invalid request")
+    return
+  }
 
   person.id = Math.floor(Math.random()*1000)
 
   persons = persons.concat(person)
+
+  
   
   console.log(person)
   console.log(persons)
