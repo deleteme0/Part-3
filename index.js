@@ -38,6 +38,15 @@ app.get('/api/persons/:i',(request,response) => {
   response.json(i_person)
 })
 
+app.delete('/api/persons/:i',(request,response) =>{
+  const  i = request.params.i;
+
+  persons= persons.filter((each) => each.id != i)
+
+
+  response.status(204).end()
+})
+
 app.get('/info',(request,response)=>{
   let d = Date(Date.now()).toString()
   console.log(d)
