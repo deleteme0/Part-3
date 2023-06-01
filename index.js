@@ -5,7 +5,11 @@ app.use(express.json())
 
 var morgan = require('morgan')
 
-app.use(morgan('tiny'))
+morgan.token('logy', (req,res) => {
+  return JSON.stringify(req.body)
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :logy'))
 
 let persons = [
     { 
@@ -32,54 +36,6 @@ let persons = [
 
 app.get('/api/persons', (request, response) => {
   response.json(persons)
-})
-
-app.get('/api/persons/:i',(request,response) => {
-  const i = request.params.i;
-
-  const i_person = persons.find((each) => each.id == i)
-
-  response.json(i_person)
-})
-
-app.delete('/api/persons/:i',(request,response) =>{
-  const  i = request.params.i;
-
-  persons= persons.filter((each) => each.id != i)
-
-
-  response.status(204).end()
-})
-
-app.post('/api/persons',(request,response) => {
-  const person = request.body
-
-  try{
-  const temp = persons.filter((each) => each.name == person.name)
-  if (temp.length > 0){
-    response.status(400)
-    response.send("Name Already exists")
-    return
-  }
-
-  const temp2 = persons.filter((each)=> each.number == person.number)
-  if (temp2.length > 0){
-    response.status(400)
-    response.send("Number already exists")
-    return
-  }
-  }
-  catch{
-    response.status(400)
-    response.send("Invalid request")
-    return
-  }
-
-  person.id = Math.floor(Math.random()*1000)
-
-  persons = persons.concat(person)
-
-  response.status(204).end()
 })
 
 app.get('/info',(request,response)=>{
