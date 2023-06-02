@@ -38,6 +38,58 @@ app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
 
+app.get('/api/persons/:i',(request,response) => {
+  const i = request.params.i;
+
+  const i_person = persons.find((each) => each.id == i)
+
+  response.json(i_person)
+})
+
+app.delete('/api/persons/:i',(request,response) =>{
+  const  i = request.params.i;
+
+  persons= persons.filter((each) => each.id != i)
+
+
+  response.status(204).end()
+})
+
+app.post('/api/persons',(request,response) => {
+  const person = request.body
+
+  try{
+  const temp = persons.filter((each) => each.name == person.name)
+  if (temp.length > 0){
+    response.status(400)
+    response.send("Name Already exists")
+    return
+  }
+
+  const temp2 = persons.filter((each)=> each.number == person.number)
+  if (temp2.length > 0){
+    response.status(400)
+    response.send("Number already exists")
+    return
+  }
+  }
+  catch{
+    response.status(400)
+    response.send("Invalid request")
+    return
+  }
+
+  person.id = Math.floor(Math.random()*1000)
+
+  persons = persons.concat(person)
+
+  
+  
+  console.log(person)
+  console.log(persons)
+
+  response.status(204).end()
+})
 app.get('/info',(request,response)=>{
   let d = Date(Date.now()).toString()
   console.log(d)
@@ -45,18 +97,6 @@ app.get('/info',(request,response)=>{
   response.send("<div><b><p>Phonebook has info for "+ persons.length+" people</p><p> "+d+"</p></b></div>")
 })
 
-app.get('/api/persons/:i',(request,response)=>{
-  const id = Number(request.params.i)
-
-  const person = persons.find((each)=> each.id === id)
-
-  if (person){
-    response.json(person)
-  }
-  else{
-    response.status(404).end()
-  }
-})
 
 const PORT = 3001
 app.listen(PORT, () => {
