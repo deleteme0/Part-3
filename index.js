@@ -8,6 +8,8 @@ app.use(express.json())
 
 var morgan = require('morgan')
 
+const Person = require('./models/person')
+
 morgan.token('logy', (req,res) => {
   return JSON.stringify(req.body)
 })
@@ -38,7 +40,10 @@ let persons = [
 ]
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
 })
 
 app.get('/api/persons/:i',(request,response) => {
