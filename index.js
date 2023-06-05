@@ -26,6 +26,8 @@ app.get('/api/persons', (request, response) => {
 app.get('/api/persons/:i',(request,response) => {
   const i = request.params.i;
 
+  const persons = Person.find({})
+
   const i_person = persons.find((each) => each.id == i)
 
   response.json(i_person)
@@ -33,51 +35,34 @@ app.get('/api/persons/:i',(request,response) => {
 
 app.delete('/api/persons/:i',(request,response) =>{
   const  i = request.params.i;
+  const persons = Person.find({})
 
-  persons= persons.filter((each) => each.id != i)
 
+  //persons= persons.filter((each) => each.id != i)
 
+  
   response.status(204).end()
 })
 
 app.post('/api/persons',(request,response) => {
-  const person = request.body
+  const req_person = request.body
 
-  try{
-  const temp = persons.filter((each) => each.name == person.name)
-  if (temp.length > 0){
-    response.status(400)
-    response.send("Name Already exists")
-    return
-  }
+  const persons = Person.find({})
 
-  const temp2 = persons.filter((each)=> each.number == person.number)
-  if (temp2.length > 0){
-    response.status(400)
-    response.send("Number already exists")
-    return
-  }
-  }
-  catch{
-    response.status(400)
-    response.send("Invalid request")
-    return
-  }
+  const person = new Person({
+    name: req_person.name,
+    number: req_person.number
+  })
 
-  person.id = Math.floor(Math.random()*1000)
+  person.save().then(result =>{
+    console.log(result)
+  })
 
-  persons = persons.concat(person)
-
-  
-  
-  console.log(person)
-  console.log(persons)
 
   response.status(204).end()
 })
 app.get('/info',(request,response)=>{
   let d = Date(Date.now()).toString()
-  console.log(d)
   
   response.send("<div><b><p>Phonebook has info for "+ persons.length+" people</p><p> "+d+"</p></b></div>")
 })
