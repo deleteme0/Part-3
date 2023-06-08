@@ -35,7 +35,12 @@ app.get('/api/persons/:i',(request,response) => {
 
 app.delete('/api/persons/:i',(request,response) =>{
   const  i = request.params.i;
-  const persons = Person.find({})
+  Person.findByIdAndRemove(i).then(()=>{
+    response.status(204).end()
+  }).catch(()=>{
+    response.send("<p>Id not found</p>");
+    response.status(204).end()
+  })
 
 
   //persons= persons.filter((each) => each.id != i)
