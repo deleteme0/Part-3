@@ -8,10 +8,10 @@ const url = process.env.MONGODB_URI
 
 mongoose.set('strictQuery',false)
 mongoose.connect(url)
-    .then(()=>{console.log("connected")})
-    .catch((error) => {
-        console.log(error.message)
-    })
+  .then(() => {console.log('connected')})
+  .catch((error) => {
+    console.log(error.message)
+  })
 
 const phoneschema = new mongoose.Schema({
   name: {
@@ -22,18 +22,18 @@ const phoneschema = new mongoose.Schema({
   number: {
     type: String,
     minlength: 8,
-    validate: (x) =>{
+    validate: (x) => {
       return /^\d{2,3}[-]\d{5,8}$/.test(x)
     }
   }
 })
 
 phoneschema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString()
-        delete returnedObject._id
-        delete returnedObject.__v
-    }
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
 })
 
 
