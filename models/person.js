@@ -19,7 +19,13 @@ const phoneschema = new mongoose.Schema({
     minlength: 3,
     required: true
   },
-  number: String
+  number: {
+    type: String,
+    minlength: 8,
+    validate: (x) =>{
+      return /^\d{2,3}[-]\d{5,8}$/.test(x)
+    }
+  }
 })
 
 phoneschema.set('toJSON', {
