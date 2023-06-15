@@ -42,7 +42,7 @@ app.get('/api/persons/:i',(request,response) => {
 })
 
 
-app.delete('/api/persons/:i',(request,response) =>{
+app.delete('/api/persons/:i',(request,response,next) =>{
   const  i = request.params.i;
   Person.findByIdAndRemove(i).then(()=>{
     response.status(204).end()
@@ -54,7 +54,7 @@ app.delete('/api/persons/:i',(request,response) =>{
 })
 
 
-app.put('/api/persons/:i',(request,response) => {
+app.put('/api/persons/:i',(request,response,next) => {
   const req_person = request.body;
 
   const new_person = {
@@ -71,7 +71,7 @@ app.put('/api/persons/:i',(request,response) => {
   response.status(204).end()
 })
 
-app.post('/api/persons',(request,response) => {
+app.post('/api/persons',(request,response,next) => {
   const req_person = request.body
 
 
@@ -83,13 +83,14 @@ app.post('/api/persons',(request,response) => {
 
   person.save().then(result =>{
     console.log(result)
-  })
+    response.status(204).end()
+  }).catch(error => next(error))
 
-  response.status(204).end()
+  
 })
 
 
-app.get('/info',(request,response)=>{
+app.get('/info',(request,response,next)=>{
   let d = Date(Date.now()).toString()
   
   Person.find({}).then(persons => {  
@@ -108,11 +109,13 @@ app.use(unknownEndpoint)
 
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  //console.error(error.message)
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } 
+  }else if (error.name === 'ValidationError'){
+    return response.status(400).send({error: 'name length must be greater than 3'})
+  }
 
   next(error)
 }
